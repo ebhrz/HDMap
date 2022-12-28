@@ -25,6 +25,15 @@ This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, 
 </div>
 <div style="clear:both"></div>
 
+## Oveview
+* [Features](#key-features)
+* [Pipeline](#pipeline-overview)
+* [Requirements](#requirements)
+* [Preprocess](#preprocess)
+* [Usage](#usage)
+    * [Folder Structure](#folder-structure)
+    * [Bag File Structure](#bag-file-structure)
+
 ## Key Features
 Our tool supports below features:
 * **Soft time synchronization**
