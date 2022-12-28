@@ -208,10 +208,10 @@ colors = np.row_stack(pd.DataFrame(color_classes)['color']).astype('uint8')
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.FATAL)
 fixCloudPubHandle = rospy.Publisher('dedistortion_cloud', PointCloud2, queue_size=5)
 originCloudPubHandle = rospy.Publisher('origin_cloud', PointCloud2, queue_size=5)
-semanticCloudPubHandle = rospy.Publisher('semantic_cloud', PointCloud2, queue_size=5)
+semanticCloudPubHandle = rospy.Publisher('SemanticCloud', PointCloud2, queue_size=5)
 vecCloudPubHandle = rospy.Publisher('vec_cloud', PointCloud2, queue_size=5)
-imgPubHandle = rospy.Publisher('camera_image', Image, queue_size=5)
-semimgPubHandle = rospy.Publisher('semantic_image', Image, queue_size=5)
+imgPubHandle = rospy.Publisher('Img', Image, queue_size=5)
+semimgPubHandle = rospy.Publisher('SemanticImg', Image, queue_size=5)
 groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 print('ros ready')
 
@@ -223,7 +223,7 @@ bag = Bag(args.bag)
 start = bag.get_start_time()
 start = start+args.fastfoward
 if args.duration:
-    end = start+args.fastfoward+args.duration
+    end = start+args.duration
     end = genpy.Time(end)
 else:
     end = None

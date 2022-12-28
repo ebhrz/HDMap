@@ -15,10 +15,7 @@ from cv_bridge import CvBridge
 import collections
 import pclpy
 from pclpy import pcl
-import open3d as o3d
-import open3d.visualization as vis
 import multiprocessing as mp
-import alphashape
 from predict import get_colors
 
 
@@ -90,11 +87,6 @@ def imread(name,type = 1):
     else:
         return cv2.imread(name,0)
 
-def pcdshow(pts):
-    cloud = o3d.geometry.PointCloud()
-    cloud.points = o3d.utility.Vector3dVector(pts)
-    axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=2, origin=[0, 0, 0])
-    vis.draw([cloud]+[axis])
 
 def transformPointCloud(Tf,target_frame, point_cloud):
     """
@@ -424,26 +416,3 @@ def vectorize(pc):
         vpc = np.concatenate((vpc,c_line),axis=0)
 
     return vpc, boxes
-
-def concave(pc):
-    vpc = np.array(()).reshape(-1, 3)
-    dbs.fit(pc)
-    labels = dbs.fit_predict(pc)  # label
-    cluster = list(set(labels))
-    n = len(cluster)
-    for i in range(n):
-        c = pc[labels==i]#each cluster
-        if len(c) == 0:
-            continue
-        points = c[:,:2]
-        try:
-            concaves = list(alphashape.alphashape(points,7).exterior.coords)
-        except:
-            continue
-        concaves.append(concaves[0])
-        last_bd=concaves[0]
-        for bd in concaves[1:]:
-            c_line = draw_line(np.array((*last_bd,0)),np.array((*bd,0)))
-            vpc = np.concatenate((vpc,c_line),axis=0)
-            last_bd = bd
-    return vpc
