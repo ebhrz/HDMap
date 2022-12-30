@@ -76,6 +76,7 @@ def process():
 
 color_classes = get_colors()
 parser = argparse.ArgumentParser(description='Rebuild semantic point cloud')
+parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
 parser.add_argument('-i','--input',default='result/hd_bak2/sempcd.pkl',type=argparse.FileType('rb'))
 parser.add_argument('-m','--mode',default='indoor',choices=['indoor','outdoor'],help="Depend on the way to store the pickle file")
 parser.add_argument('-f','--filters', default=None,nargs='+',type=int,help='Default to show all the classes, the meaning of each class refers to class.json')
@@ -85,7 +86,9 @@ parser.add_argument('--semantic',default=None,help='Semantic photos folder')
 parser.add_argument('--origin',default=None,help='Origin photos folder')
 args = parser.parse_args()
 
-
+if args.config:
+    with open(args.config,'r') as f:
+        config = json.load(f)
 
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.DEBUG)
 

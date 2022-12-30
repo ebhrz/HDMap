@@ -40,7 +40,7 @@ import multiprocessing as mp
 from threading import Thread
 import argparse
 from tf.transformations import quaternion_from_euler as qfe
-
+import json
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -198,11 +198,24 @@ def getImg(lmsg,IQ):
 
 
 parser = argparse.ArgumentParser(description='Semantic point cloud builder, due to the large computation, map construction is devided into several steps to avoid interrupting in case')
-parser.add_argument('-b','--bag',required=True,help='The recorded ros bag')
+parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
+parser.add_argument('-b','--bag',help='The recorded ros bag path')
 parser.add_argument('-f','--fastfoward',help='Start to play at the nth seconds', default=0,type = float)
 parser.add_argument('-d','--duration',help='Time to play', default=None,type = float)
 parser.add_argument('-p','--pose',help='Pose file for the construction', required=True)
 args = parser.parse_args()
+
+if args.config:
+    with open(args.config,'r') as f:
+        config = json.load(f)
+
+
+K = config['intrinsic'] or K
+extrinsic = config['extrinsic'] or extrinsic
+dismatrix = config['distortion_matrix'] or dismatrix
+K = np.matrix(K)
+extrinsic = np.matrix(extrinsic)
+dismatrix = np.matrix(dismatrix)
 
 colors = np.row_stack(pd.DataFrame(color_classes)['color']).astype('uint8')
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.FATAL)
@@ -216,25 +229,23 @@ groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 print('ros ready')
 
 labels = get_colors()
-predict = get_predict_func()
+predict = get_predict_func(config['model_conifg'],config['model_file'])
 print('torch ready')
 
-bag = Bag(args.bag)
+bag = Bag(args.bag or config['bag_file'])
 start = bag.get_start_time()
-start = start+args.fastfoward
-if args.duration:
-    end = start+args.duration
-    end = genpy.Time(end)
-else:
-    end = None
+start = start+(args.fastfoward or config['start_time'])
+end = start+(args.duration or config['play_time'])
 start = genpy.Time(start)
-
+end = genpy.Time(end)
 bagread = bag.read_messages(start_time=start,end_time = end)
 print('bag ready')
 
 
-cmkdir("result/indoor/originpics")
-cmkdir("result/indoor/sempics")
+cmkdir(config['save_folder']+"/originpics")
+cmkdir(config['save_folder']+"/sempics")
+briconvert = config['image_comressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
+
 tnow = None
 QSIZE=20
 #queue flag
@@ -260,7 +271,7 @@ lidartopicmsg = None
 imgtopicmsg = None
 
 
-poses = np.loadtxt(args.pose,delimiter=',')
+poses = np.loadtxt((args.pose or config['pose_file']),delimiter=',')
 
 IQ = myqueue(40)
 LQ = myqueue(5)
@@ -271,11 +282,11 @@ simgs = []
 pose_save = []
 save_step = 2
 for msg in bagread:
-    if msg.topic == '/zed2/camera/left/image_raw':
+    if msg.topic == config['camera_topic']:
         imsg = msg.message
         IQ.append(imsg)
         # IFLAG = True
-    elif msg.topic == '/velodyne_points':
+    elif msg.topic == config['LiDAR_topic']:
         lmsg = msg.message
         LQ.append(lmsg)
         removeQ = []
@@ -291,17 +302,17 @@ for msg in bagread:
                 removeQ.append(lmsg)
             else:
                 #img = bri.compressed_imgmsg_to_cv2(imgmsg)
-                img = bri.imgmsg_to_cv2(imgmsg)
+                img = briconvert(imgmsg)
 
                 xyz = pose[:3]
                 rot = qfe(*pose[4:7])
                 pose_save.append(np.array([*xyz,*rot]))
                 rimg = cv2.undistort(img, K, dismatrix)
-                cv2.imwrite("result/indoor/originpics/%06d.png"%(index),rimg)
+                cv2.imwrite(config['save_folder']+"/originpics/%06d.png"%(index),rimg)
                 lps = np.array(list(pc2.read_points(lmsg)))
                 lps = lps[lps[:, 1] > 0.2]
                 sem_pcd, semimg = get_semantic_pcd(img, lps)
-                cv2.imwrite("result/indoor/sempics/%06d.png" % (index), semimg)
+                cv2.imwrite(config['save_folder']+"/sempics/%06d.png" % (index), semimg)
                 semimg = colors[semimg.flatten()].reshape((*semimg.shape, 3))
                 semimgPubHandle.publish(bri.cv2_to_imgmsg(semimg,'bgr8'))
                 if len(sem_pcd) != 0:
@@ -317,7 +328,7 @@ for msg in bagread:
                 else:
                     print('no semantic info')
                 if index%200 == 0:
-                    with open('result/indoor/indoor.pkl','wb') as f:
+                    with open(config['save_folder']+'/indoor.pkl','wb') as f:
                         pickle.dump(sem_world,f)
                     print('saved epoch %d'%index)
             index+=1
@@ -325,7 +336,7 @@ for msg in bagread:
             LQ.remove(lmsg)
 pose_save = np.stack(pose_save)
 #Now save the middle-ware
-np.savetxt('result/indoor/pose.csv',pose_save,delimiter=',')
-with open('result/indoor/indoor.pkl','wb') as f:
+np.savetxt(config['save_folder']+'/pose.csv',pose_save,delimiter=',')
+with open(config['save_folder']+'/indoor.pkl','wb') as f:
     pickle.dump(sem_world,f)
 print('Done')

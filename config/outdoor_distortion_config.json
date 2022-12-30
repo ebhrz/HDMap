@@ -1,0 +1,12 @@
+{
+    "bag_file":"data/outdoor/outdoor.bag",
+    "start_time":120,
+    "play_time":5,
+    "GNSS_topic":"/acc_pose",
+    "LiDAR_topic":"/origin_cloud",
+    "cloud_distortion":true,
+    "camera_topic":"/zed2/camera/left/image_raw/compressed",
+    "image_compressed":true,
+    "save_folder":"result/outdoor",
+    "mode":"outdoor"
+}

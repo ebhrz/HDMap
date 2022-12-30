@@ -9,9 +9,9 @@ def get_colors():
         j = json.load(f)
     return j['labels']
 
-def get_predict_func():
-    opts = ['MODEL.WEIGHTS', 'mask2former/model/model.pkl']
-    config = 'mask2former/config/swin/maskformer2_swin_large_IN21k_384_bs16_300k.yaml'
+def get_predict_func(conf_file,model_file):
+    opts = ['MODEL.WEIGHTS', model_file]
+    config = conf_file
     cfg = get_cfg()
     add_deeplab_config(cfg)
     add_maskformer2_config(cfg)
