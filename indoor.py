@@ -205,9 +205,13 @@ parser.add_argument('-d','--duration',help='Time to play', default=None,type = f
 parser.add_argument('-p','--pose',help='Pose file for the construction', required=True)
 args = parser.parse_args()
 
-if args.config:
-    with open(args.config,'r') as f:
-        config = json.load(f)
+
+with open((args.config or 'config/indoor_config.json'),'r') as f:
+    config = json.load(f)
+args.bag = (args.bag or config['bag_file'])
+args.pose = (args.pose or config['pose_file'])
+args.fastfoward = (args.fastfoward or config['start_time'])
+args.duration = (args.duration or config['play_time'])
 
 
 K = config['intrinsic'] or K
@@ -232,12 +236,16 @@ labels = get_colors()
 predict = get_predict_func(config['model_conifg'],config['model_file'])
 print('torch ready')
 
-bag = Bag(args.bag or config['bag_file'])
+bag = Bag(args.bag)
 start = bag.get_start_time()
-start = start+(args.fastfoward or config['start_time'])
-end = start+(args.duration or config['play_time'])
+start = start+args.fastfoward
+if args.duration != -1:
+    end = start+args.duration
+    end = genpy.Time(end)
+else:
+    end = None
 start = genpy.Time(start)
-end = genpy.Time(end)
+
 bagread = bag.read_messages(start_time=start,end_time = end)
 print('bag ready')
 
@@ -271,7 +279,7 @@ lidartopicmsg = None
 imgtopicmsg = None
 
 
-poses = np.loadtxt((args.pose or config['pose_file']),delimiter=',')
+poses = np.loadtxt(args.pose,delimiter=',')
 
 IQ = myqueue(40)
 LQ = myqueue(5)

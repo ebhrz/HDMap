@@ -164,7 +164,7 @@ def process():
         if args.vector:
             # pole can be vectorized globally
             # process lane
-            lanes = sempcd[sempcd[:, 3] == 24]
+            lanes = sempcd[sempcd[:, 3] == config['lane_class']]
             if len(lanepcd) < window:
                 lanepcd.append(lanes)
             else:
@@ -237,6 +237,16 @@ parser.add_argument('--origin',default=None,help='Origin photos folder')
 parser.add_argument('--vector',default=None,help='Do the vectorization, only available when filters are accepted',action='store_true')
 args = parser.parse_args()
 
+if args.config:
+    with open(args.config,'r') as f:
+        config = json.load(f)
+
+args.input = (args.input or config['save_folder']+'/indoor.pkl')
+args.mode = (args.mode or config['mode'])
+args.trajectory = (args.trajactory or config['save_folder']+'/pose.csv')
+args.save = (args.save or config['save_folder']+'/result.pcd')
+args.semantic = (args.semantic or config['save_folder']+'/sempics')
+args.origin = (args.origin or config['save_folder']+'/originpics')
 
 # init variables
 
@@ -299,7 +309,7 @@ elif args.mode == 'outdoor':
         savepcd = np.concatenate(savepcd)
 
 if args.vector:
-    poles = savepcd[np.in1d(savepcd[:, 3], [45])]
+    poles = savepcd[np.in1d(savepcd[:, 3], [config['pole_class']])]
     poles = poles[poles[:,2]>-2]
     poles = poles[poles[:,2]<8]
     pole_centers = get_pole_centers(poles[:, :3])

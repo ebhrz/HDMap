@@ -31,7 +31,7 @@ from rosbag import Bag
 import multiprocessing as mp
 from threading import Thread
 import argparse
-
+import json
 
 
 def cmkdir(path):
@@ -157,11 +157,27 @@ cmkdir("result/outdoor/originpics")
 cmkdir("result/outdoor/sempics")
 
 parser = argparse.ArgumentParser(description='Semantic point cloud builder, due to the large computation, map construction is devided into several steps to avoid interrupting in case')
+parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
 parser.add_argument('-b','--bag',required=True,help='The recorded ros bag')
 parser.add_argument('-f','--fastfoward',help='Start to play at the nth seconds', default=0,type = float)
 parser.add_argument('-d','--duration',help='Time to play', default=None,type = float)
 parser.add_argument('-u','--undistortion',help='do LiDAR points undistortion',default=True,type=bool)
 args = parser.parse_args()
+
+with open((args.config or 'config/outdoor_config.json'),'r') as f:
+    config = json.load(f)
+args.bag = (args.bag or config['bag_file'])
+args.fastfoward = (args.fastfoward or config['start_time'])
+args.duration = (args.duration or config['play_time'])
+args.undistortion = (args.undistortion or config['cloud_distortion'])
+
+
+K = config['intrinsic'] or K
+extrinsic = config['extrinsic'] or extrinsic
+dismatrix = config['distortion_matrix'] or dismatrix
+K = np.matrix(K)
+extrinsic = np.matrix(extrinsic)
+dismatrix = np.matrix(dismatrix)
 
 
 colors = np.row_stack(pd.DataFrame(color_classes)['color']).astype('uint8')
@@ -183,7 +199,7 @@ print('torch ready')
 bag = Bag(args.bag)
 start = bag.get_start_time()
 start = start+args.fastfoward
-if args.duration:
+if args.duration != -1:
     end = start+args.duration
     end = genpy.Time(end)
 else:
@@ -222,19 +238,20 @@ imgtopicmsg = None
 # undistortion switch
 UNDISTORTION = args.undistortion
 
-store_file = open('result/outdoor/outdoor.pkl','wb')
+briconvert = config['image_comressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
+
+
+store_file = open(config['save_folder']+'/outdoor.pkl','wb')
 index = 0
 pose_save = []
 
 for msg in bagread:
     #Handle(msg)
-    if len(gtQ) == 0 and msg.topic == '/dedistortion_cloud':
+    if len(gtQ) == 0 and msg.topic == config['LiDAR_topic']:
         continue
-    # if index == 15954:
-    #     break
     if not rospy.is_shutdown():
         try:
-            if msg.topic == '/acc_pose':
+            if msg.topic == config['GNSS_topic']:
                 gnss = msg.message
                 if not INIT:
                     INIT = [gnss.latitude, gnss.longitude, gnss.altitude, gnss.azimuth, 0, 0, 0]
@@ -325,9 +342,9 @@ for msg in bagread:
                             l = l_last
                         index += 1
                         pose_save.append(np.array([*imgt[1], *imgt[2]]))
-                        img = bri.compressed_imgmsg_to_cv2(imgmsg)
+                        img = briconvert(imgmsg)
                         imgPubHandle.publish(bri.cv2_to_imgmsg(img))
-                        cv2.imwrite('result/outdoor/originpics/%06d.png'%index,img)
+                        cv2.imwrite(config['save_folder']+'/originpics/%06d.png'%index,img)
                         #del img
                         pcd = np.array(l[1])
                         pcd = pcd_trans(pcd,l[0][1],l[0][2])
@@ -336,7 +353,7 @@ for msg in bagread:
                         sem_pcd, semimg = get_semantic_pcd(img,align_pcd)
                         perf_time_end = time.time()
                         print('image segmentation used %.2f'% (perf_time_end - perf_time_start))
-                        cv2.imwrite("result/outdoor/sempics/%06d.png"%index,semimg)
+                        cv2.imwrite(config['save_folder']+"/sempics/%06d.png"%index,semimg)
                         semimg = colors[semimg.flatten()].reshape((*semimg.shape, 3))
                         semimgPubHandle.publish(bri.cv2_to_imgmsg(semimg, 'bgr8'))
                         if len(sem_pcd) != 0:
@@ -357,17 +374,9 @@ for msg in bagread:
                         IQ.remove(tmp)
                 for tmp in lidar_remove:
                     LOQ.remove(tmp)
-            elif msg.topic == '/origin_cloud':
-                lidartopicmsg = msg
-                if args.undistortion:
-                    LOQ.append(lidartopicmsg)
-            elif msg.topic == '/zed2/camera/left/image_raw/compressed':
-                IQ.append(msg)
-            elif msg.topic == '/dedistortion_cloud':
-                lidartopicmsg = msg
-                if not args.undistortion:
-                    LOQ.append(lidartopicmsg)
-            elif msg.topic == '/image':
+            elif msg.topic == config['LiDAR_topic']:
+                LOQ.append(lidartopicmsg)
+            elif msg.topic == config['camera_topic']:
                 IQ.append(msg)
         except rospy.ROSInterruptException:
             break
@@ -375,5 +384,5 @@ for msg in bagread:
             print('break')
             break
 pose_save=np.stack(pose_save)
-np.savetxt('result/outdoor/pose.csv',pose_save,delimiter=',')
+np.savetxt(config['save_folder']+'/pose.csv',pose_save,delimiter=',')
 store_file.close()

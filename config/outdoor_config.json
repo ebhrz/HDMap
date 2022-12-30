@@ -7,6 +7,24 @@
     "cloud_distortion":false,
     "camera_topic":"/zed2/camera/left/image_raw/compressed",
     "image_compressed":true,
+    "extrinsic":    
+    [
+        [ 1.0102, -0.0026, -0.0087,  0.1135],
+        [-0.0033, -0.0030, -0.9963, -0.1617],
+        [ 0.0049,  0.9962, -0.0287,  0.0516],
+        [ 0.0000,  0.0000,  0.0000,  1.0000]
+    ],
+   "intrinsic":
+    [
+        [543.5046, 0, 630.7183], 
+        [0, 540.5383, 350.9063], 
+        [0, 0, 1]
+    ],
+    "distortion_matrix":[-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02],
     "save_folder":"result/outdoor",
-    "mode":"outdoor"
+    "mode":"outdoor",
+    "model_config":"mask2former/config/swin/maskformer2_swin_large_IN21k_384_bs16_300k.yaml",
+    "model_file":"'mask2former/model/model.pkl'",
+    "lane_class":24,
+    "pole_class":45
 }

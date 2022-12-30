@@ -89,6 +89,14 @@ args = parser.parse_args()
 if args.config:
     with open(args.config,'r') as f:
         config = json.load(f)
+args.input = (args.input or config['save_folder']+'/indoor.pkl')
+args.mode = (args.mode or config['mode'])
+args.trajectory = (args.trajactory or config['save_folder']+'/pose.csv')
+args.save = (args.save or config['save_folder']+'/result.pcd')
+args.semantic = (args.semantic or config['save_folder']+'/sempics')
+args.origin = (args.origin or config['save_folder']+'/originpics')
+
+
 
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.DEBUG)
 
@@ -100,7 +108,6 @@ semanticCloudPubHandle = rospy.Publisher('SemanticCloud', PointCloud2, queue_siz
 vecPubHandle = rospy.Publisher('VectorCloud', PointCloud2, queue_size=5)
 testPubHandle = rospy.Publisher('TestCloud', PointCloud2, queue_size=5)
 semimgPubHandle = rospy.Publisher('SemanticImg',Image,queue_size = 5)
-
 
 
 savepcd = []
