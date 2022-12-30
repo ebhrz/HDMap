@@ -4,22 +4,22 @@ This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, 
 
 <div align="center">
     <div style="display:inline; float:left;margin:5px">
-            <img height=350px src="img/garage.gif"/>
+            <img height=250px src="img/garage.gif"/>
             <p><strong>The progress of indoor map construction</strong></p>
     </div>
     <div style="display:inline; float:left;margin:5px">
-            <img height=350px src="img/garage.png"/>
+            <img height=250px src="img/garage.png"/>
             <p><strong>The 3D semantic map of the indoor scenario</strong></p>
     </div>
 </div>
 <div style="clear:both"></div>
 <div align="center">
     <div style="display:inline; float:left;margin:5px">
-            <img height=350px src="img/outdoor.png"/>
+            <img height=250px src="img/outdoor.png"/>
             <p><strong>The 3D semantic map of the outdoor scenario</strong></p>
     </div>
     <div style="display:inline;float:left ;margin:5px;text-align:center">
-            <img height=350px src="img/vector.png"/>
+            <img height=250px src="img/vector.png"/>
             <p><strong>The 3D vector map of the outdoor scenario</strong></p>
     </div>
 </div>
