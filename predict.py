@@ -1,6 +1,6 @@
 from detectron2.config import get_cfg
 from detectron2.projects.deeplab import add_deeplab_config
-from mask2former.mask2former import add_maskformer2_config
+from model.mask2former.mask2former import add_maskformer2_config
 from detectron2.engine.defaults import DefaultPredictor
 from mmseg.apis import inference_segmentor, init_segmentor
 import mmcv
