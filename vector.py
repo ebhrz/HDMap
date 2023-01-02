@@ -243,7 +243,7 @@ if args.config:
 
 args.input = (args.input or config['save_folder']+'/indoor.pkl')
 args.mode = (args.mode or config['mode'])
-args.trajectory = (args.trajactory or config['save_folder']+'/pose.csv')
+args.trajectory = (args.trajectory or config['save_folder']+'/pose.csv')
 args.save = (args.save or config['save_folder']+'/result.pcd')
 args.semantic = (args.semantic or config['save_folder']+'/sempics')
 args.origin = (args.origin or config['save_folder']+'/originpics')
