@@ -77,8 +77,8 @@ def process():
 
 parser = argparse.ArgumentParser(description='Rebuild semantic point cloud')
 parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
-parser.add_argument('-i','--input',default='result/hd_bak2/sempcd.pkl',type=argparse.FileType('rb'))
-parser.add_argument('-m','--mode',default='indoor',choices=['indoor','outdoor'],help="Depend on the way to store the pickle file")
+parser.add_argument('-i','--input',type=argparse.FileType('rb'))
+parser.add_argument('-m','--mode',choices=['indoor','outdoor'],help="Depend on the way to store the pickle file")
 parser.add_argument('-f','--filters', default=None,nargs='+',type=int,help='Default to show all the classes, the meaning of each class refers to class.json')
 parser.add_argument('-s','--save',default=None,help='Save to pcd file')
 parser.add_argument('-t','--trajectory',default=None,help='Trajectory file, use to follow the camera')
