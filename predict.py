@@ -22,13 +22,18 @@ def get_predict_func(conf_file,model_file):
     cfg.merge_from_file(config)
     cfg.merge_from_list(opts)
     cfg.freeze()
-    predictor = DefaultPredictor(cfg)
+    predictor_base = DefaultPredictor(cfg)
+    def predictor(img):
+        simg = predictor_base(img)
+        simg = simg['sem_seg']
+        simg[simg<0.5]=0
+        cimg = simg.argmax(axis=0).cpu().numpy().astype('uint8')
+        return cimg
     return predictor
 
 def get_predict_func_ade2k(conf_file,model_file):
     model = init_segmentor(conf_file, model_file, device='cuda:0')
     def predictor(img):
-        res={}
-        res['sem_seg'] = inference_segmentor(model, img)
+        res = inference_segmentor(model, img)[0]
         return res
     return predictor

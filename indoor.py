@@ -126,10 +126,7 @@ def get_semantic_pcd(img,pcd):
     rimg = cv2.undistort(img, K, dismatrix)
     src = pcl2image(pcd, img.shape[1], img.shape[0], extrinsic)
     # segmentation
-    simg = predict(rimg)
-    simg = simg['sem_seg']
-    simg[simg<0.5]=0
-    cimg = simg.argmax(axis=0).cpu().numpy().astype('uint8')
+    cimg = predict(rimg)
     src[:, :, 2] = cimg
     # recover pcd from depth img
     sem_pcdata = img2pcl(src)
