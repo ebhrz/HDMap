@@ -15,7 +15,7 @@ def get_colors(cmap = 'mapillary'):
     # return j['labels']
     if cmap == 'mapillary':
         return create_mapillary_vistas_label_colormap()
-    if cmap == 'ake20k':
+    if cmap == 'ade20k':
         return create_ade20k_label_colormap()
     if cmap == 'cityscapes':
         return create_cityscapes_label_colormap()
