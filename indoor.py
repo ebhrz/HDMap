@@ -234,7 +234,7 @@ groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 print('ros ready')
 
 labels = get_colors()
-predict = getattr(predict,config['predict_func'])(config['model_conifg'],config['model_file'])
+predict = getattr(predict,config['predict_func'])(config['model_config'],config['model_file'])
 print('torch ready')
 
 bag = Bag(args.bag)

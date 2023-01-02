@@ -191,7 +191,7 @@ groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 semimgPubHandle = rospy.Publisher('SemanticImg', Image, queue_size=5)
 print('ros ready')
 
-predict = getattr(predict,config['predict_func'])(config['model_conifg'],config['model_file'])
+predict = getattr(predict,config['predict_func'])(config['model_config'],config['model_file'])
 
 
 print('torch ready')
