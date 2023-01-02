@@ -28,6 +28,7 @@ def get_predict_func(conf_file,model_file):
 def get_predict_func_ade2k(conf_file,model_file):
     model = init_segmentor(conf_file, model_file, device='cuda:0')
     def predictor(img):
-        res = inference_segmentor(model, img)
+        res={}
+        res['sem_seg'] = inference_segmentor(model, img)
         return res
     return predictor
