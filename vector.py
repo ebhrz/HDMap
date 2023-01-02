@@ -237,7 +237,7 @@ if args.config:
     with open(args.config,'r') as f:
         config = json.load(f)
 
-args.input = (args.input or config['save_folder']+'/indoor.pkl')
+args.input = (args.input or open(config['save_folder']+(config['mode'] == 'indoor' and '/indoor.pkl' or '/outdoor.pkl'),'rb'))
 args.mode = (args.mode or config['mode'])
 args.trajectory = (args.trajectory or config['save_folder']+'/pose.csv')
 args.save = (args.save or config['save_folder']+'/result.pcd')
