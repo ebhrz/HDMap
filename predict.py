@@ -9,7 +9,7 @@ import json
 
 
 def get_colors():
-    with open('mask2former/class.json','r') as f:
+    with open('imseg/mask2former/class.json','r') as f:
         j = json.load(f)
     return j['labels']
 
