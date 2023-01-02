@@ -239,7 +239,7 @@ imgtopicmsg = None
 # undistortion switch
 UNDISTORTION = args.undistortion
 
-briconvert = config['image_comressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
+briconvert = config['image_compressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
 
 
 store_file = open(config['save_folder']+'/outdoor.pkl','wb')

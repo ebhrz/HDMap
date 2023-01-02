@@ -253,7 +253,7 @@ print('bag ready')
 
 cmkdir(config['save_folder']+"/originpics")
 cmkdir(config['save_folder']+"/sempics")
-briconvert = config['image_comressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
+briconvert = config['image_compressed'] and bri.compressed_imgmsg_to_cv2 or bri.imgmsg_to_cv2
 
 tnow = None
 QSIZE=20
