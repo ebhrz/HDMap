@@ -57,7 +57,7 @@ def cmkdir(path):
             pass
 
 def class2color(cls,alpha = False):
-    c = color_classes[cls]['color']
+    c = color_classes[cls]
     if not alpha:
         return np.array(c).astype(np.uint8)
     else:
@@ -211,7 +211,7 @@ args.pose = (args.pose or config['pose_file'])
 args.fastfoward = (args.fastfoward or config['start_time'])
 args.duration = (args.duration or config['play_time'])
 
-
+color_classes = get_colors(config['cmap'])
 K = config['intrinsic'] or K
 extrinsic = config['extrinsic'] or extrinsic
 dismatrix = config['distortion_matrix'] or dismatrix
@@ -219,7 +219,7 @@ K = np.matrix(K)
 extrinsic = np.matrix(extrinsic)
 dismatrix = np.matrix(dismatrix)
 
-colors = np.row_stack(pd.DataFrame(color_classes)['color']).astype('uint8')
+colors = np.row_stack(pd.DataFrame(color_classes)).astype('uint8')
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.FATAL)
 fixCloudPubHandle = rospy.Publisher('dedistortion_cloud', PointCloud2, queue_size=5)
 originCloudPubHandle = rospy.Publisher('origin_cloud', PointCloud2, queue_size=5)

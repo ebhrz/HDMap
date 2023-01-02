@@ -61,7 +61,7 @@ def color2int32(tup):
     return np.array([*tup[1:], 255]).astype(np.uint8).view('uint32')[0]
 
 def color_convert(cls):
-    c = color_classes[cls]['color']
+    c = color_classes[cls]
     return np.array([*c, 255]).astype(np.uint8).view('uint32')[0]
 
 def r(d):
@@ -117,7 +117,7 @@ def save_pc(pcmsg, fname):
 def save_nppc(nparr,fname):
     s = nparr.shape
     if s[1] == 4:#rgb
-        tmp = pcl.PointCloud.PointXYZRGBA(nparr[:,:3],np.array([color_classes[int(i)]['color'] for i in nparr[:,3]]))
+        tmp = pcl.PointCloud.PointXYZRGBA(nparr[:,:3],np.array([color_classes[int(i)] for i in nparr[:,3]]))
     else:
         tmp = pcl.PointCloud.PointXYZ(nparr)
     pcl.io.save(fname,tmp)

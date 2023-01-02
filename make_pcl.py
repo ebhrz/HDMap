@@ -33,7 +33,7 @@ def get_colors():
     return j['labels']
 
 def class2color(cls,alpha = False):
-    c = color_classes[cls]['color']
+    c = color_classes[cls]
     if not alpha:
         return np.array(c).astype(np.uint8)
     else:
@@ -42,7 +42,7 @@ def class2color(cls,alpha = False):
 def save_nppc(nparr,fname):
     s = nparr.shape
     if s[1] == 4:#rgb
-        tmp = pcl.PointCloud.PointXYZRGBA(nparr[:,:3],np.array([color_classes[int(i)]['color'] for i in nparr[:,3]]))
+        tmp = pcl.PointCloud.PointXYZRGBA(nparr[:,:3],np.array([color_classes[int(i)] for i in nparr[:,3]]))
     else:
         tmp = pcl.PointCloud.PointXYZ(nparr)
     pcl.io.save(fname,tmp)
@@ -74,7 +74,7 @@ def process():
 	if args.origin and index < len(imgs):
 		imgPubHandle.publish(bri.cv2_to_imgmsg(cv2.imread(imgs[index]), 'bgr8'))
 
-color_classes = get_colors()
+
 parser = argparse.ArgumentParser(description='Rebuild semantic point cloud')
 parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
 parser.add_argument('-i','--input',default='result/hd_bak2/sempcd.pkl',type=argparse.FileType('rb'))
@@ -96,7 +96,7 @@ args.save = (args.save or config['save_folder']+'/result.pcd')
 args.semantic = (args.semantic or config['save_folder']+'/sempics')
 args.origin = (args.origin or config['save_folder']+'/originpics')
 
-
+color_classes = get_colors(config['cmap'])
 
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.DEBUG)
 
@@ -115,7 +115,7 @@ bri = CvBridge()
 if args.semantic:
 	simgs = glob.glob(args.semantic+'/*')
 	simgs.sort(key = lambda x:int(re.findall('[0-9]{3,7}',x)[0]))
-	colors = np.row_stack(pd.DataFrame(color_classes)['color']).astype('uint8')
+	colors = np.row_stack(pd.DataFrame(color_classes)).astype('uint8')
 
 if args.origin:
 	imgs = glob.glob(args.origin+'/*')
