@@ -219,7 +219,7 @@ K = np.matrix(K)
 extrinsic = np.matrix(extrinsic)
 dismatrix = np.matrix(dismatrix)
 
-colors = np.row_stack(pd.DataFrame(color_classes)).astype('uint8')
+colors = color_classes.astype('uint8')
 rospy.init_node('fix_distortion', anonymous=False, log_level=rospy.FATAL)
 fixCloudPubHandle = rospy.Publisher('dedistortion_cloud', PointCloud2, queue_size=5)
 originCloudPubHandle = rospy.Publisher('origin_cloud', PointCloud2, queue_size=5)

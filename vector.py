@@ -281,7 +281,7 @@ if args.semantic:
     simgs = glob.glob(args.semantic+'/*')
     simgs.sort()
     #simgs.sort(key = lambda x:int(re.findall('[0-9]{4,5}',x)[0]))
-    colors = np.row_stack(pd.DataFrame(color_classes)).astype('uint8')
+    colors = color_classes.astype('uint8')
 
 if args.origin:
     imgs = glob.glob(args.origin+'/*')
