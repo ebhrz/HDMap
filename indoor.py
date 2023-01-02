@@ -328,7 +328,7 @@ for msg in bagread:
                     sem_msg.header.frame_id = 'world'
                     sem_msg.header.stamp = lmsg.header.stamp
                     semanticCloudPubHandle.publish(sem_msg)
-                    imgPubHandle.publish(imgmsg)
+                    imgPubHandle.publish(bri.cv2_to_imgmsg(img,'bgr8'))
                     print('semantic point publish')
                     removeQ.append(lmsg)
                 else:
