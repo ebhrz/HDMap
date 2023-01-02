@@ -9,6 +9,7 @@ import sys
 import time
 import rospy
 import genpy
+import predict
 from predict import get_predict_func, get_colors
 from sensor_msgs.msg import PointCloud2
 from sensor_msgs.msg import Imu
@@ -233,7 +234,7 @@ groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 print('ros ready')
 
 labels = get_colors()
-predict = get_predict_func(config['model_conifg'],config['model_file'])
+predict = getattr(predict,config['predict_func'])(config['model_conifg'],config['model_file'])
 print('torch ready')
 
 bag = Bag(args.bag)

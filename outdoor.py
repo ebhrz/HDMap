@@ -15,7 +15,7 @@ from novatel_msgs.msg import INSPVAX
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Quaternion
-from predict import get_predict_func
+import predict
 from util import *
 import tf2_ros as tf2
 from tf.transformations import quaternion_from_euler as qfe
@@ -191,7 +191,8 @@ groundTruthPubHandle = rospy.Publisher('ground_truth', Path, queue_size=0)
 semimgPubHandle = rospy.Publisher('SemanticImg', Image, queue_size=5)
 print('ros ready')
 
-predict = get_predict_func()
+predict = getattr(predict,config['predict_func'])(config['model_conifg'],config['model_file'])
+
 
 print('torch ready')
 

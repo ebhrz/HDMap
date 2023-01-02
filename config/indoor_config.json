@@ -22,8 +22,9 @@
     "distortion_matrix":[-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02],
     "save_folder":"result/indoor",
     "mode":"indoor",
-    "model_config":"mask2former/config/swin/maskformer2_swin_large_IN21k_384_bs16_300k.yaml",
-    "model_file":"'mask2former/model/model.pkl'",
+    "model_config":"imseg/mask2former/config/swin/maskformer2_swin_large_IN21k_384_bs16_300k.yaml",
+    "model_file":"'imseg/mask2former/model/model.pkl'",
     "lane_class":24,
-    "pole_class":45
+    "pole_class":45,
+    "predict_func":"get_predict_func"
 }
