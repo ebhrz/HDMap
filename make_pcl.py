@@ -17,7 +17,7 @@ import time
 import glob
 import cv2
 import re
-
+from predict import get_colors
 
 global sempcd
 global args
@@ -27,10 +27,6 @@ global br
 global savepcd
 global odom_trans
 
-def get_colors():
-    with open('mask2former/class.json','r') as f:
-        j = json.load(f)
-    return j['labels']
 
 def class2color(cls,alpha = False):
     c = color_classes[cls]

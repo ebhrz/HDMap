@@ -16,7 +16,7 @@ import glob
 import cv2
 import re
 from tf import transformations
-
+from predict import get_colors
 
 height = {'pole': 5, 'lane':-1.1}
 
@@ -52,10 +52,6 @@ class myqueue(list):
 def color2int32(tup):
     return np.array([*tup[1:], 255]).astype(np.uint8).view('uint32')[0]
 
-def get_colors():
-    with open('mask2former/class.json','r') as f:
-        j = json.load(f)
-    return j['labels']
 
 def class2color(cls,alpha = False):
     c = color_classes[cls]
