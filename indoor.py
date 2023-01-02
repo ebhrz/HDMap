@@ -203,7 +203,7 @@ parser.add_argument('-c','--config',help='The config file path, recommand use th
 parser.add_argument('-b','--bag',help='The recorded ros bag path')
 parser.add_argument('-f','--fastfoward',help='Start to play at the nth seconds', default=0,type = float)
 parser.add_argument('-d','--duration',help='Time to play', default=None,type = float)
-parser.add_argument('-p','--pose',help='Pose file for the construction', required=True)
+parser.add_argument('-p','--pose',help='Pose file for the construction')
 args = parser.parse_args()
 
 
