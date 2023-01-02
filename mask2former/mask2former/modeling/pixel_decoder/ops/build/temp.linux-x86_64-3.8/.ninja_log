@@ -1,6 +1,0 @@
-# ninja log v5
-0	2405	1662369023464729478	/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/build/temp.linux-x86_64-3.8/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/src/cpu/ms_deform_attn_cpu.o	6df4bf24843a3344
-0	10877	1662369031932781373	/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/build/temp.linux-x86_64-3.8/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/src/vision.o	32ae0e4246e8e024
-1	2407	1662369297758319327	/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/build/temp.linux-x86_64-3.8/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/src/cpu/ms_deform_attn_cpu.o	d00f2716d2be18d7
-1	9327	1662369304674350896	/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/build/temp.linux-x86_64-3.8/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/src/cuda/ms_deform_attn_cuda.o	517dc0f5a60589f2
-1	10761	1662369306106357448	/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/build/temp.linux-x86_64-3.8/home/hrz/project/lanepole_detect/Mask2Former/mask2former/modeling/pixel_decoder/ops/src/vision.o	8f23c5893353f83e
