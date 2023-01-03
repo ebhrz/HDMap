@@ -129,13 +129,14 @@ if args.mode == 'indoor':
 	sempcds = pickle.load(args.input)
 	for sempcd in sempcds:
 		process()
-	savepcd = np.concatenate(sempcds)
+		savepcd.append(sempcd)
+	savepcd = np.concatenate(savepcd)
 elif args.mode == 'outdoor':
 	try:
 		while True:
 			sempcd = pickle.load(args.input)
-			savepcd.append(sempcd)
 			process()
+			savepcd.append(sempcd)
 	except EOFError:
 		print('done')
 		savepcd = np.concatenate(savepcd)
