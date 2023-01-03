@@ -69,6 +69,7 @@ def process():
 		semimgPubHandle.publish(bri.cv2_to_imgmsg(semimg, 'bgr8'))
 	if args.origin and index < len(imgs):
 		imgPubHandle.publish(bri.cv2_to_imgmsg(cv2.imread(imgs[index]), 'bgr8'))
+	return sempcd
 
 
 parser = argparse.ArgumentParser(description='Rebuild semantic point cloud')
@@ -128,15 +129,15 @@ if args.trajectory:
 if args.mode == 'indoor':
 	sempcds = pickle.load(args.input)
 	for sempcd in sempcds:
-		process()
-		savepcd.append(sempcd)
+		pcd = process()
+		savepcd.append(pcd)
 	savepcd = np.concatenate(savepcd)
 elif args.mode == 'outdoor':
 	try:
 		while True:
 			sempcd = pickle.load(args.input)
-			process()
-			savepcd.append(sempcd)
+			pcd = process()
+			savepcd.append(pcd)
 	except EOFError:
 		print('done')
 		savepcd = np.concatenate(savepcd)
