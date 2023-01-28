@@ -54,7 +54,7 @@ For more details, please refer to our [paper](blank)
 ## Requirements
 This tool needs lots of dependencies, thus, a docker version will be released soon.
 ### **Docker Install**
-This tool is built with Python. To use this tool, there are several dependencies to be installed. Here are the lists:
+This tool is built with Python. To use this tool, there are several dependencies to be installed.
 ### **Manually Install**
 *   ***ROS***
 <br>Our tool utilizes ROS to store the recording data and do the visualization. ROS installation refers to [here](http://wiki.ros.org/noetic/Installation)
