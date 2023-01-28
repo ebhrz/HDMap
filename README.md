@@ -70,7 +70,7 @@ pip install numpy
 pip install pandas
 ```
 * ***OpenCV***
-Our tool also requires OpenCV. Install it via:
+<br>Our tool also requires OpenCV. Install it via:
 ```bash
 pip install opencv-python
 ```
@@ -238,6 +238,8 @@ Please make your own config file refer to the config files in config folder. Her
 ```
 * bag_file
   <br> The path of the bag file
+* pose_file
+  <br> The path of the pose file, ***(indoor only, outdoor ignored)***
 * start_time
   <br> From where to read the bag, or skip how long of the bag
 * play_time
