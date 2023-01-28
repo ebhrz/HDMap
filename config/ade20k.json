@@ -1,0 +1,31 @@
+{
+    "bag_file":"/home/hrz/project/fdata/indoor/2022-12-05-17-14-13.bag",
+    "pose_file":"/home/hrz/project/fdata/indoor/result/pose6d.csv",
+    "start_time":0,
+    "play_time":-1,
+    "LiDAR_topic":"/velodyne_points",
+    "camera_topic":"/zed2/zed_node/left/image_rect_color/compressed",
+    "image_compressed":true,
+    "extrinsic":    
+    [
+        [ 1.0102, -0.0026, -0.0087,  0.1135],
+        [-0.0033, -0.0030, -0.9963, -0.1617],
+        [ 0.0049,  0.9962, -0.0287,  0.0516],
+        [ 0.0000,  0.0000,  0.0000,  1.0000]
+    ],
+   "intrinsic":
+    [
+        [543.5046, 0, 630.7183], 
+        [0, 540.5383, 350.9063], 
+        [0, 0, 1]
+    ],
+    "distortion_matrix":[-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02],
+    "save_folder":"result/indoor",
+    "mode":"indoor",
+    "model_config":"imseg/mmseg/configs/swin/upernet_swin_large_patch4_window12_512x512_pretrain_384x384_22K_160k_ade20k.py",
+    "model_file":"imseg/mmseg/model/upernet_swin_large_patch4_window12_512x512_pretrain_384x384_22K_160k_ade20k_20220318_091743-9ba68901.pth",
+    "lane_class":24,
+    "pole_class":45,
+    "predict_func":"get_predict_func_mmlab",
+    "cmap":"ade20k"
+}

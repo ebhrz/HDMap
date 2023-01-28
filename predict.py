@@ -20,7 +20,7 @@ def get_colors(cmap = 'mapillary'):
     if cmap == 'cityscapes':
         return create_cityscapes_label_colormap()
 
-def get_predict_func(conf_file,model_file):
+def get_predict_func_detectron(conf_file,model_file):
     opts = ['MODEL.WEIGHTS', model_file]
     config = conf_file
     cfg = get_cfg()
@@ -38,7 +38,7 @@ def get_predict_func(conf_file,model_file):
         return cimg
     return predictor
 
-def get_predict_func_ade2k(conf_file,model_file):
+def get_predict_func_mmsegmentation(conf_file,model_file):
     model = init_segmentor(conf_file, model_file, device='cuda:0')
     def predictor(img):
         res = inference_segmentor(model, img)[0]

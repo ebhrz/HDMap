@@ -10,7 +10,7 @@ import time
 import rospy
 import genpy
 import predict
-from predict import get_predict_func, get_colors
+from predict import get_colors
 from sensor_msgs.msg import PointCloud2
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import Image,CompressedImage

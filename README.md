@@ -52,16 +52,19 @@ For more details, please refer to our [paper](blank)
 </p>
 
 ## Requirements
+This tool needs lots of dependencies, thus, a docker version will be released soon.
+### **Docker Install**
 This tool is built with Python. To use this tool, there are several dependencies to be installed. Here are the lists:
-* ***ROS***
-Our tool utilizes ROS to store the recording data and do the visualization. ROS installation refers to [here](http://wiki.ros.org/noetic/Installation)
-    * ***Novatel Msgs***
-    Map construction requires accurate localization. In our sensorkit, a span-CPT is employed to be the ground truth. Please install its message type via 
-    ```bash
-        sudo apt install ros-(your ROS version)-novatel-gps-msgs
-    ```
+### **Manually Install**
+*   ***ROS***
+<br>Our tool utilizes ROS to store the recording data and do the visualization. ROS installation refers to [here](http://wiki.ros.org/noetic/Installation)
+      - ***Novatel Msgs***
+        <br>Map construction requires accurate localization. In our sensorkit, a span-CPT is employed to be the ground truth. Please install its message type via 
+        ```bash
+            sudo apt install ros-(your ROS version)-novatel-gps-msgs
+        ```
 * ***Pandas*** and ***Numpy***
-Please use the commands below to install:
+<br>Please use the commands below to install:
 ```bash
 pip install numpy
 pip install pandas
@@ -72,22 +75,29 @@ Our tool also requires OpenCV. Install it via:
 pip install opencv-python
 ```
 * ***PyTorch***
-Please refer to PyTorch installation guide at [here](https://pytorch.org/get-started/locally/)
+<br>Please refer to PyTorch installation guide at [here](https://pytorch.org/get-started/locally/)
     * ***Detectron2***
-    This is a image segmentation framework by Facebook using PyTorch. Our tool directly uses the pretrained Swin2Transformer model. Please refer to its installation guide at [here](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)
+    <br>This is a image segmentation framework from Facebook using PyTorch. Our tool directly uses the pretrained Swin2Transformer model. Please refer to its installation guide at [here](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)
+    * ***MMSegmentation***
+    <br>This is a image segmentation framework by OpenMMLab using PyTorch. Our tool can also support the pretrained model in their model zoo. Please refer to its installation guide at [here](https://mmsegmentation.readthedocs.io/en/latest/get_started.html)
 * ***Scikit-learn***
-This is a powerful tool for machine learning. Our tool uses DBSCAN from it to do the cluster. Install it via:
+<br>This is a powerful tool for machine learning. Our tool uses DBSCAN from it to do the cluster. Install it via:
 ```bash
 pip install scikit-learn
 ```
 * ***Pclpy***
-Since we'll process the point cloud, we choose this python wrapper for PCL which uses pybind11 to maintain the same API. Installation refers to [here](https://github.com/davidcaron/pclpy)
+<br>Since we'll process the point cloud, we choose this python wrapper for PCL which uses pybind11 to maintain the same API. Installation refers to [here](https://github.com/davidcaron/pclpy)
 
 ## Folder Structure
 ```
 .
 ├── LICENSE
 ├── README.md
+├── config
+│   ├── ade20k.json
+│   ├── indoor_config.json
+│   ├── outdoor_config.json
+│   └── outdoor_distortion_config.json
 ├── data
 │   ├── indoor
 │   │   ├── indoor.bag  # place your indoor bag file here
@@ -95,19 +105,26 @@ Since we'll process the point cloud, we choose this python wrapper for PCL which
 │   └── outdoor
 │       └── outdoor.bag # place your outdoor bag file here
 ├── result # this folder will be gererated automatically
-├── mask2former
-│   ├── class.json
-│   ├── config
-│   ├── config.py
-│   ├── model
-│   │   └── model.pkl # place the pretrainied swin2transformer model weights
-│   └── mask2former
+├── imseg
+│   ├── mask2former
+│   │   ├── class.json
+│   │   ├── config
+│   │   ├── config.py
+│   │   ├── model
+│   │   │    └── model.pkl # place the pretrainied swin2transformer model 
+│   │   └── mask2former
+│   └── mmseg
+│       ├── _base_
+│       ├── configs
+│       └── model
+│            └── model.pkl # place the pretrainied mmsegmentation model 
 ├── indoor.py
 ├── outdoor.py
 ├── vector.py
 ├── make_pcl.py
 ├── predict.py
-└── util.py
+├── util.py
+└── vis.rviz
 ```
 If you want to run an example, please click the link to download the data.
 * [indoor.bag]()
@@ -146,39 +163,125 @@ types:       sensor_msgs/Image           [060021388200f6f0f447d0fcd9c64743]
 topics:      /velodyne_points                   4193 msgs    : sensor_msgs/PointCloud2        
              /zed2/camera/left/image_raw       12477 msgs    : sensor_msgs/Image          
 ```
-So far, we should configure the ros topics in [outdoor.py]() and [indoor.py]() manually, but as the config file is supported, it can be defined in the config file.
+Ros topic will be configured in config file.
+~~So far, we should configure the ros topics in [outdoor.py]() and [indoor.py]() manually, but as the config file is supported, it can be defined in the config file.~~
 ## Preprocess
-```
-The tool now needs to be configured manually, config file support will be avalibable soon.
-```
-### Intrinsic Parameters and Distortion Parameters
-
-The intrinsic parameters should be changed to your own's in file [util.py](https://github.com/ebhrz/HDMap/blob/f16c8624c30adf9079fd35350e69ca2989fc204f/util.py#L35)
-```python
-#Modify the intrinsic parameters to your camera's
-K = np.array([
-    [543.5046, 0, 630.7183], 
-    [0, 540.5383, 350.9063], 
-    [0, 0, 1]
-])
-#And the distortion parameters
-dismatrix = np.array([-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02])
-```
-
-### Extrinsic Parameters
-The extrinsic parameters should be changed to your own's in file [util.py](https://github.com/ebhrz/HDMap/blob/f16c8624c30adf9079fd35350e69ca2989fc204f/util.py#L26)
-```python
-#Modify the extrinsic parameters from LiDAR to camera to your own's, 
-extrinsic = np.matrix(
+Please make your own config file refer to the config files in config folder. Here are two example config files for indoor and outdoor. The explanations of each field are below the config files.
+> outdoor config file
+```json
+{
+    "bag_file":"data/outdoor/outdoor.bag",
+    "start_time":120,
+    "play_time":5,
+    "GNSS_topic":"/acc_pose",
+    "LiDAR_topic":"/dedistortion_cloud",
+    "cloud_distortion":false,
+    "camera_topic":"/zed2/camera/left/image_raw/compressed",
+    "image_compressed":true,
+    "extrinsic":    
     [
-         [ 1.0102, -0.0026, -0.0087,  0.1135],
-         [-0.0033, -0.0030, -0.9963, -0.1617],
-         [ 0.0049,  0.9962, -0.0287,  0.0516],
-         [ 0.0000,  0.0000,  0.0000,  1.0000]
-    ]
-)
+        [ 1.0102, -0.0026, -0.0087,  0.1135],
+        [-0.0033, -0.0030, -0.9963, -0.1617],
+        [ 0.0049,  0.9962, -0.0287,  0.0516],
+        [ 0.0000,  0.0000,  0.0000,  1.0000]
+    ],
+   "intrinsic":
+    [
+        [543.5046, 0, 630.7183], 
+        [0, 540.5383, 350.9063], 
+        [0, 0, 1]
+    ],
+    "distortion_matrix":[-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02],
+    "save_folder":"result/outdoor",
+    "mode":"outdoor",
+    "model_config":"imseg/mask2former/config/swin/maskformer2_swin_large_IN21k_384_bs16_300k.yaml",
+    "model_file":"imseg/mask2former/model/model.pkl",
+    "lane_class":24,
+    "pole_class":45,
+    "predict_func":"get_predict_func",
+    "cmap":"mapillary"
+}
 ```
-
+> indoor config file
+```json
+{
+    "bag_file":"data/indoor/indoor.bag",
+    "pose_file":"data/indoor/pose6d.csv",
+    "start_time":0,
+    "play_time":-1,
+    "LiDAR_topic":"/velodyne_points",
+    "camera_topic":"/zed2/zed_node/left/image_rect_color/compressed",
+    "image_compressed":true,
+    "extrinsic":    
+    [
+        [ 1.0102, -0.0026, -0.0087,  0.1135],
+        [-0.0033, -0.0030, -0.9963, -0.1617],
+        [ 0.0049,  0.9962, -0.0287,  0.0516],
+        [ 0.0000,  0.0000,  0.0000,  1.0000]
+    ],
+   "intrinsic":
+    [
+        [543.5046, 0, 630.7183], 
+        [0, 540.5383, 350.9063], 
+        [0, 0, 1]
+    ],
+    "distortion_matrix":[-1.05873889e-01,  1.32265629e-01, -8.55667814e-05,-1.04098281e-03, -7.01241428e-02],
+    "save_folder":"result/indoor",
+    "mode":"indoor",
+    "model_config":"imseg/mmseg/configs/swin/upernet_swin_large_patch4_window12_512x512_pretrain_384x384_22K_160k_ade20k.py",
+    "model_file":"imseg/mmseg/model/upernet_swin_large_patch4_window12_512x512_pretrain_384x384_22K_160k_ade20k_20220318_091743-9ba68901.pth",
+    "lane_class":24,
+    "pole_class":45,
+    "predict_func":"get_predict_func_mmlab",
+    "cmap":"ade20k"
+}
+```
+* bag_file
+  <br> The path of the bag file
+* start_time
+  <br> From where to read the bag, or skip how long of the bag
+* play_time
+  <br> How long to play the bag, -1 for the whole bag
+* GNSS_topic
+  <br> The GNSS topic name in Ros bag, ***(outdoor only, indoor ignored)***
+* LiDAR_topic
+  <br> The LiDAR topic name in Ros bag
+* cloud_distortion
+  <br> To do the LiDAR motion distortion fix or not
+* camera_topic
+  <br> The camera topic name in Ros bag
+* image_compressed
+  <br> Whether the image format in the Ros bag is compressed or not
+* extrinsic
+  <br> LiDAR and camera extrinsic matrix
+* intrinsic
+  <br> Camera intrinsic matrix
+* distortion_matrix
+  <br> Camera distortion matrix
+* save_folder
+  <br> Save folder name
+* mode
+  <br> Use indoor mode or outdoor mode
+* model_config
+  <br> The path of the segmentation model config file
+* model_file
+  <br> The path of the segmentation model file
+* lane_class
+  <br> The ordinal number of the lane line in the segmentation model 
+* pole_class
+  <br> The ordinal number of the pole in the segmentation model 
+* predict_func
+  <br> This is the function name of the prediction function in file ***predict.py***. There are already two function ***get_predict_func_detectron*** and ***get_predict_func_mmlab***. One is for the pretrained models from Facebook and the other is for the models from MMLab. If you want to use your own models, please write your own prediction function, which is required to return a numpy array with the shape of W\*H. The value of each pixel is the segmentation class. For example an image with the size 3*3 and 3 types after the segmentation:
+  <br>
+  ```
+  [
+    [1,1,2],
+    [1,2,1],
+    [0,1,2]
+  ]
+  ```
+* cmap
+  <br> The color map scheme, ***ade20k***, ***cityscapes*** and ***mapillary*** are available.
 
 ### Indoor Pose Estimation
 For indoor scenario, there is no GNSS signal to provide global localization. Thus, pose estimation should be performed at first. Also, We recommond you to use LiDAR SLAM algorithm such as A-LOAM, LIO-SAM, etc. to estimate the pose. [Here](TODO) is an implementation of LIO-SAM with several changes to generate the pose for all the LiDAR messages.
@@ -186,6 +289,7 @@ For indoor scenario, there is no GNSS signal to provide global localization. Thu
 * `outdoor.py`
 ```
   -h, --help                                    show this help message and exit
+  -c CONFIG, --config CONFIG                    The config file path, recommand use this method to start the tool
   -b BAG, --bag BAG                             The recorded ros bag file
   -f FASTFOWARD, --fastfoward FASTFOWARD        Start to play at the nth seconds
   -d DURATION, --duration DURATION              Time to play
@@ -194,6 +298,7 @@ For indoor scenario, there is no GNSS signal to provide global localization. Thu
 * `indoor.py`
 ```
   -h, --help                                    show this help message and exit
+  -c CONFIG, --config CONFIG                    The config file path, recommand use this method to start the tool
   -b BAG, --bag BAG                             The recorded ros bag
   -f FASTFOWARD, --fastfoward FASTFOWARD        Start to play at the nth seconds
   -d DURATION, --duration DURATION              Time to play
@@ -202,6 +307,7 @@ For indoor scenario, there is no GNSS signal to provide global localization. Thu
 * `make_pcl.py`
 ```
   -h, --help                                    show this help message and exit
+  -c CONFIG, --config CONFIG                    The config file path, recommand use this method to start the tool
   -i INPUT, --input INPUT
   -m {indoor,outdoor}, --mode {indoor,outdoor}  Depend on the way to store the pickle file
   -f FILTERS [FILTERS ...], --filters FILTERS [FILTERS ...] Default to show all the classes, the meaning of each class refers to class.json
@@ -213,6 +319,7 @@ For indoor scenario, there is no GNSS signal to provide global localization. Thu
 * `vector.py`
 ```
   -h, --help                                    show this help message and exit
+  -c CONFIG, --config CONFIG                    The config file path, recommand use this method to start the tool
   -i INPUT, --input INPUT
   -m {outdoor,indoor}, --mode {outdoor,indoor}  Depend on the way to store the pickle file
   -f FILTERS [FILTERS ...], --filters FILTERS [FILTERS ...] Default to show all the classes, the meaning of each class refers to class.json
@@ -234,41 +341,33 @@ rviz -d vis.rviz
 #### Indoor Example
 1. First synchronize and segment.
 ```bash
-python3 indoor.py -p data/indoor/pose6d.csv -b data/indoor/garage.bag -f 10 -d 5
+python3 indoor.py -c config/indoor_config.json
 ```
-The command below will ignore the first 10 seconds and process the next 5 seconds. Attention to provide the pose file via `-p`. And this command will generate result folder and files automatically. The result contains origin images (result/indoor/originpics), semantic images (result/indoor/sempics), the processing pose file (result/indoor/pose.csv), and the semantic local point cloud (result/indoor/indoor.pkl)
 
-2. Make the global 3D semantic map. 
+
+1. Make the global 3D semantic map. 
 ```
-python3 make_pcl.py --semantic result/indoor/sempics --origin result/indoor/originpics -i result/indoor/indoor.pkl -t result/indoor/pose.csv -s result/indoor/result.pcd -m indoor
+python3 make_pcl.py -c config/indoor_config.json
 ```
-This command is used for combine the local point cloud and do the visualization. `-i` option is **compulsory**. `-s` will determin where to save point cloud map.
 
 3. Make the global 3D vector map.
 ```
-python3 vector.py --semantic result/indoor/sempics --origin result/indoor/originpics -i result/indoor/indoor.pkl -t result/indoor/pose.csv -s result/indoor/result.pcd -m indoor --vector
+python3 vector.py -c config/indoor_config.json
 ```
-This command is similar to `make_pcl.py` but the option `--vector` can vectorize the lane lines and poles.
 
 #### Outdoor Example
 1. First synchronize and segment.
 ```bash
-python3 outdoor.py -b data/outdoor/outdoor.bag -u -f 120 -d 5 -u
+python3 outdoor.py -c config/outdoor_config.json
 ```
-The command below will ignore the first 120 seconds and process the next 5 seconds. And during the process, LiDAR motion distortion correction will be performed via option `-u`. And this command will generate result folder and files automatically. The result contains origin images (result/outdoor/originpics), semantic images (result/outdoor/sempics), the processing pose file (result/outdoor/pose.csv), and the semantic local point cloud (result/outdoor/indoor.pkl)
-
 2. Make the global 3D semantic map. 
 ```
-python3 make_pcl.py --semantic result/outdoor/sempics --origin result/outdoor/originpics -i result/outdoor/outdoor.pkl -t result/outdoor/pose.csv -s result/outdoor/result.pcd -m outdoor
+python3 make_pcl.py -c config/outdoor_config.json
 ```
-This command is used for combine the local point cloud and do the visualization. `-i` option is **compulsory**. `-s` will determin where to save point cloud map.
-
 3. Make the global 3D vector map.
 ```
-python3 vector.py --semantic result/outdoor/sempics --origin result/outdoor/originpics -i result/outdoor/outdoor.pkl -t result/outdoor/pose.csv -s result/outdoor/result.pcd -m outdoor --vector
+python3 vector.py -c config/vector_config.json
 ```
-This command is similar to `make_pcl.py` but the option `--vector` can vectorize the lane lines and poles.
-
 -----
 
 ## Example Sensor Kit Setup
