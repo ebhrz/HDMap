@@ -2,28 +2,20 @@
 ## Introduction
 This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, which can build a HD semantic map or HD vector map. A docker version will coming soon.
 
-<div align="center">
-    <div style="display:inline; float:left;margin:5px">
-            <img height=250px src="img/garage.gif"/>
-            <p><strong>The progress of indoor map construction</strong></p>
-    </div>
-    <div style="display:inline; float:left;margin:5px">
-            <img height=250px src="img/garage.png"/>
-            <p><strong>The 3D semantic map of the indoor scenario</strong></p>
-    </div>
-</div>
-<div style="clear:both"></div>
-<div align="center">
-    <div style="display:inline; float:left;margin:5px">
-            <img height=250px src="img/outdoor.png"/>
-            <p><strong>The 3D semantic map of the outdoor scenario</strong></p>
-    </div>
-    <div style="display:inline;float:left ;margin:5px;text-align:center">
-            <img height=250px src="img/vector.png"/>
-            <p><strong>The 3D vector map of the outdoor scenario</strong></p>
-    </div>
-</div>
-<div style="clear:both"></div>
+<table style="width:100%; border:none;text-align:center" cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+  <td><img height=250px src="img/garage.gif"/></td><td><img height=250px src="img/garage.png"/></td>
+</tr>
+<tr>
+  <td><strong>The progress of indoor map construction</strong></td><td><strong>The 3D semantic map of the indoor scenario</strong></td>
+</tr>
+<tr>
+  <td><img height=250px src="img/outdoor.png"/></td><td><img height=250px src="img/vector.png"/></td>
+</tr>
+<tr>
+  <td><strong>The 3D semantic map of the outdoor scenario</strong></td><td><strong>The 3D vector map of the outdoor scenario</strong></td>
+</tr>
+</table>
 
 ## Oveview
 * [Features](#key-features)
