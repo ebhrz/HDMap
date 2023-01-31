@@ -46,7 +46,7 @@ For more details, please refer to our [paper](blank)
 ## Requirements
 This tool needs lots of dependencies, thus, we urge all of you to use docker to run our map builder.
 ### **Docker Install**
-0. Check that your grphics driver and docker are properly installed.
+0. Check that your grphics driver and docker are properly installed, especially the nvidia-docker suit.
 1. Clone our git repository to local disk.
    ```bash
    git clone https://github.com/ebhrz/HDMap.git
