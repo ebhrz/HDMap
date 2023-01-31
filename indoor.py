@@ -16,8 +16,6 @@ from sensor_msgs.msg import Imu
 from sensor_msgs.msg import Image,CompressedImage
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
-from novatel_gps_msgs.msg import Inspvax
-from novatel_msgs.msg import INSPVAX
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Quaternion
