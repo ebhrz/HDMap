@@ -155,7 +155,7 @@ cmkdir("result/outdoor/sempics")
 
 parser = argparse.ArgumentParser(description='Semantic point cloud builder, due to the large computation, map construction is devided into several steps to avoid interrupting in case')
 parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
-parser.add_argument('-b','--bag',required=True,help='The recorded ros bag')
+parser.add_argument('-b','--bag',help='The recorded ros bag')
 parser.add_argument('-f','--fastfoward',help='Start to play at the nth seconds', default=0,type = float)
 parser.add_argument('-d','--duration',help='Time to play', default=None,type = float)
 parser.add_argument('-u','--undistortion',help='do LiDAR points undistortion',default=True,type=bool)
