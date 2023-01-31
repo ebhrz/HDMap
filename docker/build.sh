@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t ros-pytorch:noetic_pt110_cu113 .
+docker build -t ebhrz/ros-pytorch:noetic_pt110_cu113 .
