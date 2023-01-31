@@ -223,6 +223,7 @@ def process():
 
 # parse arguments
 parser = argparse.ArgumentParser(description='Rebuild semantic point cloud')
+parser.add_argument('-c','--config',help='The config file path, recommand use this method to start the tool')
 parser.add_argument('-i','--input',type=argparse.FileType('rb'))
 parser.add_argument('-m','--mode',choices=['outdoor','indoor'],help="Depend on the way to store the pickle file")
 parser.add_argument('-f','--filters', default=None,nargs='+',type=int,help='Default to show all the classes, the meaning of each class refers to class.json')
