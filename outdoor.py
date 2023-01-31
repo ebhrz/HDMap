@@ -158,7 +158,7 @@ parser.add_argument('-c','--config',help='The config file path, recommand use th
 parser.add_argument('-b','--bag',help='The recorded ros bag')
 parser.add_argument('-f','--fastfoward',help='Start to play at the nth seconds', default=0,type = float)
 parser.add_argument('-d','--duration',help='Time to play', default=None,type = float)
-parser.add_argument('-u','--undistortion',help='do LiDAR points undistortion',default=True,type=bool)
+parser.add_argument('-u','--undistortion',help='do LiDAR points undistortion',type=bool)
 args = parser.parse_args()
 
 with open((args.config or 'config/outdoor_config.json'),'r') as f:
