@@ -27,6 +27,7 @@
     "model_file":"imseg/mask2former/model/model.pkl",
     "lane_class":24,
     "pole_class":45,
+    "vector":true,
     "predict_func":"get_predict_func_detectron",
     "cmap":"mapillary"
 }

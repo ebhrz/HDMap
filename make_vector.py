@@ -244,7 +244,7 @@ args.trajectory = (args.trajectory or config['save_folder']+'/pose.csv')
 args.save = (args.save or config['save_folder']+'/result.pcd')
 args.semantic = (args.semantic or config['save_folder']+'/sempics')
 args.origin = (args.origin or config['save_folder']+'/originpics')
-
+args.vector = (args.vector) or config['vector']
 # init variables
 
 window = 10
@@ -300,7 +300,7 @@ elif args.mode == 'outdoor':
             sempcd = pickle.load(args.input)
             savepcd.append(sempcd)
             process()
-            print(index)
+            #print(index)
     except EOFError:
         print('done')
         savepcd = np.concatenate(savepcd)
@@ -322,7 +322,7 @@ if args.save is not None:
     lane = np.vstack(vectors)
     p = np.vstack(poles)
     v = np.vstack((lane,p))
-    save_nppc(v,'/'.join(args.save.split('/')[:-1])+'/lane_vector.pcd')
+    save_nppc(v,'/'.join(args.save.split('/')[:-1])+'/vector.pcd')
 
 
 
