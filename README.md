@@ -53,6 +53,7 @@ This tool needs lots of dependencies, thus, we urge all of you to use docker to 
    ```
 2. Open the docker folder and start the docker via the start script.
    ```bash
+   cd HDMap && cd docker
    sudo ./start.sh
    ```
    You can run this script repeatedly to open several command windows to run roscore, rviz and the map builder.
@@ -129,7 +130,7 @@ pip install scikit-learn
 │            └── model.pth # place the pretrainied mmsegmentation model 
 ├── indoor.py
 ├── outdoor.py
-├── vector.py
+├── make_vector.py
 ├── make_pcl.py
 ├── predict.py
 ├── util.py
@@ -330,7 +331,7 @@ For indoor scenario, there is no GNSS signal to provide global localization. Thu
   --semantic SEMANTIC                           Semantic photos folder
   --origin ORIGIN                               Origin photos folder
 ```
-* `vector.py`
+* `make_vector.py`
 ```
   -h, --help                                    show this help message and exit
   -c CONFIG, --config CONFIG                    The config file path, recommand use this method to start the tool
