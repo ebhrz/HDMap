@@ -137,9 +137,9 @@ pip install scikit-learn
 └── vis.rviz
 ```
 If you want to run an example, please click the link to download the data.
-* [indoor.bag]()
-* [outdoor.bag]()
-* [model.pkl]()
+* [indoor.bag](https://www.dropbox.com/s/5cydkewq6ey3k10/2023-01-31%20-%20Indoor.bag?dl=0)
+* [outdoor.bag](https://www.dropbox.com/s/k3g6966kaz0qu7e/2023-01-31%20-%20Outdoor.bag?dl=0)
+* [model.pkl](https://dl.fbaipublicfiles.com/maskformer/mask2former/mapillary_vistas/semantic/maskformer2_swin_large_IN21k_384_bs16_300k/model_final_90ee2d.pkl)
 ## Bag File Structure
 For the outdoor bag file, here's an example:
 ```
@@ -250,7 +250,7 @@ Please make your own config file refer to the config files in config folder. Her
 * bag_file
   <br> The path of the bag file
 * pose_file
-  <br> The path of the pose file, ***(indoor only, outdoor ignored)***
+  <br> The path of the pose file, format is (x,y,z,order,q,w,e,r,where q,w,e,r are the quaternion)***(indoor only, outdoor ignored)***
 * start_time
   <br> From where to read the bag, or skip how long of the bag
 * play_time
