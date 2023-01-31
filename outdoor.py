@@ -373,7 +373,7 @@ for msg in bagread:
                 for tmp in lidar_remove:
                     LOQ.remove(tmp)
             elif msg.topic == config['LiDAR_topic']:
-                LOQ.append(lidartopicmsg)
+                LOQ.append(msg)
             elif msg.topic == config['camera_topic']:
                 IQ.append(msg)
         except rospy.ROSInterruptException:
