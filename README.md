@@ -44,9 +44,26 @@ For more details, please refer to our [paper](blank)
 </p>
 
 ## Requirements
-This tool needs lots of dependencies, thus, a docker version will be released soon.
+This tool needs lots of dependencies, thus, we urge all of you to use docker to run our map builder.
 ### **Docker Install**
-This tool is built with Python. To use this tool, there are several dependencies to be installed.
+0. Check that your grphics driver and docker are properly installed.
+1. Clone our git repository to local disk.
+   ```bash
+   git clone https://github.com/ebhrz/HDMap.git
+   ```
+2. Open the docker folder and start the docker via the start script.
+   ```bash
+   sudo ./start.sh
+   ```
+   You can run this script repeatedly to open several command windows to run roscore, rviz and the map builder.
+3. Use the stop script to stop the docker.
+   ```bash
+   sudo ./stop.sh
+   ```
+4. (optional) You can build the docker image by yourself by the build script:
+   ```bash
+   sudo ./build.sh
+   ```
 ### **Manually Install**
 *   ***ROS***
 <br>Our tool utilizes ROS to store the recording data and do the visualization. ROS installation refers to [here](http://wiki.ros.org/noetic/Installation)
@@ -109,7 +126,7 @@ pip install scikit-learn
 │       ├── _base_
 │       ├── configs
 │       └── model
-│            └── model.pkl # place the pretrainied mmsegmentation model 
+│            └── model.pth # place the pretrainied mmsegmentation model 
 ├── indoor.py
 ├── outdoor.py
 ├── vector.py
@@ -190,6 +207,7 @@ Please make your own config file refer to the config files in config folder. Her
     "model_file":"imseg/mask2former/model/model.pkl",
     "lane_class":24,
     "pole_class":45,
+    "vector":true,
     "predict_func":"get_predict_func",
     "cmap":"mapillary"
 }
@@ -224,7 +242,7 @@ Please make your own config file refer to the config files in config folder. Her
     "model_file":"imseg/mmseg/model/upernet_swin_large_patch4_window12_512x512_pretrain_384x384_22K_160k_ade20k_20220318_091743-9ba68901.pth",
     "lane_class":24,
     "pole_class":45,
-    "predict_func":"get_predict_func_mmlab",
+    "predict_func":"get_predict_func_mmsegmentation",
     "cmap":"ade20k"
 }
 ```
@@ -264,6 +282,8 @@ Please make your own config file refer to the config files in config folder. Her
   <br> The ordinal number of the lane line in the segmentation model 
 * pole_class
   <br> The ordinal number of the pole in the segmentation model 
+* vector
+  <br> Whether to generate the vectormap. Used by make_vector.py. 
 * predict_func
   <br> This is the function name of the prediction function in file ***predict.py***. There are already two function ***get_predict_func_detectron*** and ***get_predict_func_mmlab***. One is for the pretrained models from Facebook and the other is for the models from MMLab. If you want to use your own models, please write your own prediction function, which is required to return a numpy array with the shape of W\*H. The value of each pixel is the segmentation class. For example an image with the size 3*3 and 3 types after the segmentation:
   <br>
