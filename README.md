@@ -1,6 +1,6 @@
 # IPNL - HDMap Builder
 ## Introduction
-This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, which can build a HD semantic map or HD vector map. A docker version will coming soon.
+This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, which can build a HD semantic map or HD vector map. A docker version is available now.
 
 <table style="width:100%; border:none;text-align:center" cellspacing="0" cellpadding="0" border="0" align="center">
 <tr>
