@@ -1,6 +1,14 @@
 # IPNL - HDMap Builder
 ## Introduction
-This is a tool for HDMap construction developed by IPNL. It's a whole pipeline, which can build a HD semantic map or HD vector map. A docker version is available now.
+This repository hosts an open-source HDVM (high-definition vector map) generation pipeline designed for autonomous vehicles, especially in intricate urban environments. Traditional HDVM creation methods often operate on a planar assumption, causing inaccuracies in real-world scenarios. Our solution, however, integrates data from GNSS (global navigation satellite system), INS (inertial navigation system), LiDAR, and cameras. 
+
+The process starts with the extraction of semantic data from raw images using advanced architectures like Vision Transformer (ViT) and Swin Transformer. We then acquire the absolute 3D data of these semantic objects from 3D LiDAR depth and derive high-precision pose estimates from GNSS real-time kinematic (GNSS-RTK) and an INS navigation system. This semantic data aids in the extraction of vector information, such as lane markings, which forms the HDVM.
+
+A significant feature of this repo is its focus on HDVM accuracy. We've examined the impact of two primary error sources: segmentation discrepancies and LiDAR-camera extrinsic parameter deviations. An error propagation scheme is provided to showcase how these sources can affect the HDVM's precision.
+
+For ease of setup and consistency, a Docker version of the pipeline is available and is the recommended method for deployment.
+
+This repo offers proof of our pipeline's efficacy through its open-source code and has been tested on various datasets, from indoor parking facilities to intricate urban landscapes. Explore the repository, and you'll find a comprehensive solution for HDVM generation in complex scenarios. [Link to the repository](https://github.com/ebhrz/HDMap).
 
 <table style="width:100%; border:none;text-align:center" cellspacing="0" cellpadding="0" border="0" align="center">
 <tr>
@@ -33,7 +41,6 @@ Our tool supports below features:
 * **LiDAR motion distortion correction**
 * **Image semantic segmentation**
 * **Lane lines and poles vectorization**
-* **...**
 
 For more details, please refer to our [paper](blank)
 
@@ -398,3 +405,14 @@ In outdoor scenario, all the three sensors are used. And in indoor scenario, GNS
 <p align="center">
   <img width="712pix" src="img/calibration_sensors.png">
 </p>
+
+## Citation
+If you find this tool useful, we would appreciate it if you cite our paper.
+```
+@article{Hu2023HDVM,
+  title={Towards High-Definition Vector Map Construction Based on Multi-sensor Integration for Intelligent Vehicles: Systems and Error Quantification (Under review)},
+  author={Hu, Runzhi and Bai, Shiyu and Wen, Weisong and Xia, Xin and Hsu, Li-Ta},
+  journal={IEEE Intelligent Transportation Systems Magazine},
+  year={2023}
+}
+```
