@@ -409,10 +409,10 @@ In outdoor scenario, all the three sensors are used. And in indoor scenario, GNS
 ## Citation
 If you find this tool useful, we would appreciate it if you cite our paper.
 ```
-@article{Hu2023HDVM,
-  title={Towards High-Definition Vector Map Construction Based on Multi-sensor Integration for Intelligent Vehicles: Systems and Error Quantification (Under review)},
-  author={Hu, Runzhi and Bai, Shiyu and Wen, Weisong and Xia, Xin and Hsu, Li-Ta},
-  journal={IEEE Intelligent Transportation Systems Magazine},
-  year={2023}
+@unpublished{Hu2023HDVM,
+  author    = {Hu, Runzhi and Bai, Shiyu and Wen, Weisong and Xia, Xin and Hsu, Li-Ta},
+  title     = {Towards High-Definition Vector Map Construction Based on Multi-sensor Integration for Intelligent Vehicles: Systems and Error Quantification},
+  note      = {Manuscript under review for publication in IEEE Intelligent Transportation Systems Magazine},
+  year      = {2023}
 }
 ```
