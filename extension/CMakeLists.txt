@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.0)
+project(hdmap_ext)
+set(CMAKE_CXX_STANDARD 17)
+find_package(pybind11 CONFIG REQUIRED)
+if(DEFINED PYTHON_INCLUDE_DIR AND NOT "${PYTHON_INCLUDE_DIR}" STREQUAL "")
+    message(STATUS "Using python_include_dir from argument: ${PYTHON_INCLUDE_DIR}")
+    include_directories(${PYTHON_INCLUDE_DIR})
+else()
+    message(STATUS "python_include_dir not provided. Using find_package(PythonLibs) instead.")
+    find_package(PythonLibs REQUIRED)
+endif()
+
+# include_directories(${PYBIND11_INCLUDE_DIRS})
+
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+if(DEBUG)
+    add_compile_options("-g")
+else()
+    add_compile_options("-O3")
+endif()
+
+add_library(hdmap_ext MODULE ext.cpp) 
+# pybind11_add_module(pyrtklib NO_EXTRAS ${RTK_src} ${rcv_src} pyrtklib.cpp)
+set_target_properties(hdmap_ext PROPERTIES PREFIX "")
+target_link_libraries(hdmap_ext PUBLIC pybind11::module m pthread)
