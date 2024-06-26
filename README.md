@@ -1,4 +1,6 @@
-# IPNL - HDMap Builder
+# IPNL - HD Vector Map Builder
+## Paper Link
+Our paper has been published, please refer to the [link](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/itr2.12524).
 ## Introduction
 This repository hosts an open-source HDVM (high-definition vector map) generation pipeline designed for autonomous vehicles, especially in intricate urban environments. Traditional HDVM creation methods often operate on a planar assumption, causing inaccuracies in real-world scenarios. Our solution, however, integrates data from GNSS (global navigation satellite system), INS (inertial navigation system), LiDAR, and cameras. 
 
