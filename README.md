@@ -42,7 +42,7 @@ Our tool supports below features:
 * **Image semantic segmentation**
 * **Lane lines and poles vectorization**
 
-For more details, please refer to our [paper](blank)
+For more details, please refer to our [paper](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/itr2.12524)
 
 ## Pipeline Overview
 
