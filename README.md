@@ -145,10 +145,14 @@ pip install scikit-learn
 ├── util.py
 └── vis.rviz
 ```
-If you want to run an example, please click the link to download the data.
-* [indoor.bag](https://www.dropbox.com/s/5cydkewq6ey3k10/2023-01-31%20-%20Indoor.bag?dl=0)
-* [outdoor.bag](https://www.dropbox.com/s/k3g6966kaz0qu7e/2023-01-31%20-%20Outdoor.bag?dl=0)
+If you want to run an example, please click the link to download the data. 
+* [bag dropbox link](https://www.dropbox.com/scl/fo/lpa2gqalu5ide6wk9xc9q/ACGrRd6f70YR2pfgA_oaWM4?rlkey=19z3m24hov2ho9x6acn8ho9y6&st=x63w5qyd&dl=0)
 * [model.pkl](https://dl.fbaipublicfiles.com/maskformer/mask2former/mapillary_vistas/semantic/maskformer2_swin_large_IN21k_384_bs16_300k/model_final_90ee2d.pkl)
+Then use follow commands to catenate the bag file:
+```bash
+cat outdoor.bag.part1 outdoor.bag.part2 outdoor.bag.part3 > outdoor.bag
+cat indoor.bag.part1 indoor.bag.part2 indoor.bag.part3 > indoor.bag
+```
 ## Bag File Structure
 For the outdoor bag file, here's an example:
 ```
